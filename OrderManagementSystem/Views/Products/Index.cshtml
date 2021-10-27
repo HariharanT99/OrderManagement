@@ -1,0 +1,92 @@
+﻿@model IEnumerable<DAL.Entities.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<div class="fa-pull-right">
+    <a type="button" class="btn btn-dark text-white" onclick="AddCart()"><i class="fa fa-shopping-cart"></i></a>
+</div>
+
+<p>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                Add to Cart
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="button" onclick="Add(@item.ProductId)"><i class="fa fa-plus"></i></button>
+                    @*<button class="btn btn-primary" type="button" asp-action="PlaceOrder" asp-controller="Order" asp-route-id="@item.ProductId"><i class="fa fa-plus"></i></button>*@
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+    cartItems = "";
+        function Add(id) {
+            cartItems = cartItems + ','+id;
+        console.log(cartItems);
+    }
+
+    function AddCart() {
+        //localStorage.setItem('CartProducts', cartItems);
+
+            @*$.ajax({
+            type: "GET",
+            url: '@Url.Action("Cart", "Order")',
+                contentType: "application/json; charset=utf-8",
+                data: 1,
+                dataType: 'json',
+                success: function(recData) { alert('Success'); },
+                error: function () { alert('A error'); }
+            });*@
+
+        var url = "/Order/Cart?products=" + cartItems;
+        window.location.href = url;
+
+        @*$.ajax({
+
+            url: '@Url.Action("Cart", "Order")',
+            type: "GET",
+            data: { products: cartItems },
+            success: function Redirect() {
+                var url = "/Order/Cart?products=" + cartItems;
+                window.location.href = url;
+            },
+            error: function () { alert('A error'); }
+    })*@
+    }
+
+
+
+
+    </script>
+}

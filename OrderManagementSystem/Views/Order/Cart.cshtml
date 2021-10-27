@@ -1,0 +1,75 @@
+﻿@model DAL.ViewModel.OrderViewModel
+
+@{
+    ViewData["Title"] = "Cart";
+    decimal totalPrice = 0;
+
+}
+
+<h1>Cart</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <form asp-action="Cart" method="post">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                ProductName
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.Cart.Count > 0)
+                        {
+                            @foreach (var item in ViewBag.Cart)
+                            {
+                        <tr>
+                            <td>
+                                @item.ProductName
+                            </td>
+                            <td>
+                                @item.Price
+                                @{
+                                    totalPrice = totalPrice + item.Price;
+                                }
+                            </td>
+                            <td>
+                                <input asp-for="ProductId" hidden value="@item.ProductId" />
+                            </td>
+                        </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <input type="submit" class="btn btn-primary" value="PlaceOrder" />
+            <button asp-action="Index" class="btn btn-danger">Cancle</button>
+        </div>
+    </form>
+
+
+    <div class="row justify-content-end">
+        <div class="col-4">
+            <h5>Total Price: @totalPrice</h5>
+        </div>
+    </div>
+
+
+    <div class="row justify-content-end">
+        <div class="col-4">
+            <button class="btn btn-primary">Place Order</button>
+        </div>
+    </div>
+
